@@ -47,7 +47,7 @@ jobs:
       
       - name: init terraform
         id: init
-        run: terraform init -config="terraform/azure/main.tf"
+        run: terraform init -backend-config="terraform/azure/main.tf"
 
       - name: validate terraform
         id: validate
