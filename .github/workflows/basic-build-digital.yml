@@ -39,6 +39,8 @@ jobs:
       - name: setup kurbenetes
         uses: Azure/aks-set-context@v3
         with:
+          resource-group: falsename
+          cluster-name: falsename
           method: kubeconfig
           kubeconfig: ${{ secrets.K8S_CONFIG }}
       
