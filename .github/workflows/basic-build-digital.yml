@@ -1,0 +1,55 @@
+name: basic-build-run
+
+on:
+  push:
+    branches:
+      ["*"]
+
+jobs: 
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v3.5.3
+
+      - name: login docker
+        uses: docker/login-action@v2.2.0
+        with: 
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PWD }}
+
+      - name: build and push to docker hub
+        uses: docker/build-push-action@v3.2.0
+        with:
+          context: ./
+          file: ./Dockerfile
+          push: true
+          tags: |
+            aclgo/firts_app_push_docker:v${{ github.run_number }} 
+            aclgo/firts_app_push_docker:latest
+
+            # run number count number of version
+  CD:
+    needs: CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3.5.3
+
+      - name: setup kurbenetes
+        uses: Azure/aks-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.K8S_CONFIG }}
+      
+      - name: deploy in kubernetes
+        uses: Azure/k8s-deploy@v4.9
+        with:
+          image: aclgo/firts_app_push_docker:latest
+          manifest: | 
+            k8s/firts_app_push_docker/firts_app_push_docker.yaml
+          
+
+
+
+
