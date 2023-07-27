@@ -28,28 +28,28 @@ jobs:
             aclgo/firts_app_push_docker:v${{ github.run_number }} 
             aclgo/firts_app_push_docker:latest
 
-            # run number count number of version
-  CD:
-    needs: CI
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v3.5.3
+  #           # run number count number of version
+  # CD:
+  #   needs: CI
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: checkout
+  #       uses: actions/checkout@v3.5.3
 
-      - name: setup kurbenetes
-        uses: Azure/aks-set-context@v3
-        with:
-          resource-group: falsename
-          cluster-name: falsename
-          method: kubeconfig
-          kubeconfig: ${{ secrets.K8S_CONFIG }}
+  #     - name: setup kurbenetes
+  #       uses: Azure/aks-set-context@v3
+  #       with:
+  #         resource-group: falsename
+  #         cluster-name: falsename
+  #         method: kubeconfig
+  #         kubeconfig: ${{ secrets.K8S_CONFIG }}
       
-      - name: deploy in kubernetes
-        uses: Azure/k8s-deploy@v4.9
-        with:
-          image: aclgo/firts_app_push_docker:latest
-          manifest: | 
-            k8s/firts_app_push_docker/firts_app_push_docker.yaml
+  #     - name: deploy in kubernetes
+  #       uses: Azure/k8s-deploy@v4.9
+  #       with:
+  #         image: aclgo/firts_app_push_docker:latest
+  #         manifest: | 
+  #           k8s/firts_app_push_docker/firts_app_push_docker.yaml
           
 
 
